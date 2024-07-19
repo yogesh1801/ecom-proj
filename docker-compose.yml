@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    container_name: postgres_server
+    environment:
+      POSTGRES_DB: "postgresql"
+      POSTGRES_USER: "postgresql"
+      POSTGRES_PASSWORD: "postgresql"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    command: postgres -c listen_addresses='*'
+
+  redis:
+    image: redis:latest
+    container_name: redis_server
+    ports:
+      - "6379:6379"
+
+  rabbitmq:
+    image: rabbitmq:3.8.23-management
+    container_name: rabbitmq_server
+    ports:
+      - "5672:5672"  
+      - "15672:15672" 
+    environment:
+      RABBITMQ_DEFAULT_USER: "rabbit"
+      RABBITMQ_DEFAULT_PASS: "rabbit"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+volumes:
+  postgres_data:
+    driver: local
+
+  rabbitmq_data:
+    driver: local
